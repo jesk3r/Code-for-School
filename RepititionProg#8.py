@@ -3,17 +3,19 @@ sResponds = input("Enter value: ")
 
 iCounter = 100
 
-print(sResponds)
+
+
 if sResponds == "5":
-    while 5 <= iCounter:
+    while 5 < iCounter:
+
         print(iCounter-5)
         iCounter -= 5
 
 elif sResponds == "50":
-    while 50 <= iCounter:
+    while 50 < iCounter:
         print(iCounter-5)
         iCounter -= 5
 else:
-    while int(sResponds) <= iCounter:
+    while int(sResponds) < iCounter:
         print(iCounter-5)
         iCounter -= 5
