@@ -1,12 +1,11 @@
-iTerms = 5
+iTerms = 3
 iXvalue = 2
-
 
 
 def sumofNumbers(terms,x):
     iTotal = 0
 
-    if terms == 1:
+    if terms  < 1:
         return x
     else:
         iTotal += sumofNumbers(terms-1,x)
