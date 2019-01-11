@@ -27,4 +27,4 @@ def sendpos():
 
 
 
-app.run(host='localhost',port=5000)
+app.run(host='192.168.0.14',port=5000)

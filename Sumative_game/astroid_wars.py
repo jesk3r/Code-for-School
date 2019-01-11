@@ -137,10 +137,13 @@ def gameloop():
 
 
 
+        try:
+            r = requests.post("http://192.168.0.14:5000/giveInfo",json = {'pos':Player.pivot,'angle': Player.angle,})
+            #r = requests.get("http://0.0.0.0:5000/ge")
+            print(r.json())
+        except:
+            pass
 
-        r = requests.post("http://192.168.0.14:5000/giveInfo",json = {'pos':Player.pivot,'angle': Player.angle,})
-        #r = requests.get("http://0.0.0.0:5000/ge")
-        print(r.json())
 
         # Rotated version of the image and the shifted rect.
         rotated_image, rect = rotate(surface=Player.image, angle =- Player.angle + 90, pivot=Player.pivot, offset=Player.offset)
