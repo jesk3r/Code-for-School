@@ -1,4 +1,5 @@
 import pygame as pg
+from uuid import uuid4
 
 
 class Playermodel(pg.sprite.Sprite):
@@ -14,7 +15,7 @@ class Playermodel(pg.sprite.Sprite):
         self.pivot = self.pivot
         self.offset = pg.math.Vector2(0, -5)
         self.angle = 0
-
+        self.id = str(uuid4())
 
         self.image = pg.image.load("/Users/dheeraj/Documents/git_projects/School_work/Coding_class/Sumative_game/spaceshipV3.png")
 

@@ -8,6 +8,7 @@ import socket
 import requests
 from flask import jsonify
 import PlayermodelC as player
+import atexit
 
 Display_W = 800
 Display_L = 640
@@ -109,6 +110,19 @@ def gameloop():
 
 
 
+    data = {
+        "info": {
+            "pos": Player.pivot,
+            "angle": Player.angle
+        },
+
+        "name": Player.id
+    }
+
+    #print(data)
+    rp = requests.post('http://192.168.0.14:5000/handshake', json = data)
+    #print(rp.text)
+
     DisplayScreen.fill((0, 0, 0))
 
     running = True
@@ -138,21 +152,56 @@ def gameloop():
 
 
         try:
-            r = requests.post("http://192.168.0.14:5000/giveInfo",json = {'pos':Player.pivot,'angle': Player.angle,})
-            #r = requests.get("http://0.0.0.0:5000/ge")
-            print(r.json())
+
+            #update your player info
+            data = {
+                "name": Player.id,
+                "info": {
+                "pos": Player.pivot,
+                "angle":Player.angle
+                }
+            }
+
+
+            requests.post("http://192.168.0.14:5000/updateinfo", json= data)
+
+            r = requests.get("http://192.168.0.14:5000/getplayerinfo")
+            pdata = r.json()
+
+            n = 1
+
+            for i in range(1,7):
+                rotated_image, rect = rotate(surface=Player.image, angle=- pdata[i-1][str(n)]["angle"] + 90, pivot= pdata[i-1][str(n)]["pos"], offset=Player.offset)
+                DisplayScreen.blit(rotated_image,rect)
+                n += 1
+
+
+            DisplayScreen.update()
+
+
+
+
+            pass
+
+
+
         except:
             pass
 
 
-        # Rotated version of the image and the shifted rect.
-        rotated_image, rect = rotate(surface=Player.image, angle =- Player.angle + 90, pivot=Player.pivot, offset=Player.offset)
 
-        DisplayScreen.blit(rotated_image, rect)
 
-        clock.tick(60)
+        clock.tick(100)
         pg.display.update()
 
+
+def exit_handler():
+    print(Player.id)
+    requests.post("http://192.168.0.14:5000/removeplayer",json = {"name": str(Player.id)})
+    print("game left")
+
+
+atexit.register(exit_handler)
 
 if __name__ == "__main__":
     gameloop()
