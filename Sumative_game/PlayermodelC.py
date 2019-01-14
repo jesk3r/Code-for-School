@@ -6,7 +6,7 @@ class Playermodel(pg.sprite.Sprite):
     pivot = [200, 250]
     offset = pg.math.Vector2(0, -5)
     angle = 0
-    image = pg.image.load("/Users/dheeraj/Documents/git_projects/School_work/Coding_class/Sumative_game/spaceshipV3.png")
+    image = pg.image.load("spaceshipV3.png")
     name = "hello"
 
     def __init__(self):
@@ -17,7 +17,7 @@ class Playermodel(pg.sprite.Sprite):
         self.angle = 0
         self.id = str(uuid4())
 
-        self.image = pg.image.load("/Users/dheeraj/Documents/git_projects/School_work/Coding_class/Sumative_game/spaceshipV3.png")
+        self.image = pg.image.load("spaceshipV3.png")
 
 
 
