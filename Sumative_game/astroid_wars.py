@@ -8,6 +8,7 @@ import socket
 import requests
 from flask import jsonify
 import PlayermodelC as player
+import Bullet
 import atexit
 
 Display_W = 800
@@ -19,6 +20,8 @@ clock = pg.time.Clock()
 pg.init()
 
 Player = player.Playermodel()
+Bullet = Bullet.bullet()
+
 class mouse_circle(pg.sprite.Sprite):
 
     def __init__(self,dp):
@@ -104,6 +107,14 @@ def getAngle(x1, y1, x2, y2):
     return angle
 
 
+
+def slope(x1,x2,y1,y2):
+    rise = y1-y2
+    run = x1-x2
+    return run,rise
+
+
+
 #game loop function
 def gameloop():
     pg.mouse.set_visible(True)
@@ -124,13 +135,24 @@ def gameloop():
     #print(rp.text)
 
     DisplayScreen.fill((0, 0, 0))
-
+    dxx = 100
+    dxy = 110
     running = True
     while running:
+        bullet_list = pg.sprite.Group()
+        slopes = []
+
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 pg.mouse.set_visible(True)
                 running = False
+            if event.type == MOUSEBUTTONUP:
+                x, y = slope(Player.pivot[0], event.pos[0], Player.pivot[1], event.pos[1])
+                slopes.append([x,y])
+
+
+
+
 
         keys = pg.key.get_pressed()
         if keys[pg.K_d] or keys[pg.K_RIGHT]:
@@ -141,6 +163,7 @@ def gameloop():
             Player.pivot[1] -= 10
         if keys[pg.K_s]:
             Player.pivot[1] += 10
+
 
         DisplayScreen.fill((0,0,0))
 
@@ -170,10 +193,21 @@ def gameloop():
 
             n = 1
 
+
+
             for i in range(1,7):
                 rotated_image, rect = rotate(surface=Player.image, angle=- pdata[i-1][str(n)]["angle"] + 90, pivot= pdata[i-1][str(n)]["pos"], offset=Player.offset)
                 DisplayScreen.blit(rotated_image,rect)
+
+                DisplayScreen.blit(Bullet.image, (dxx, dxy))
+                print(slopes)
+                dxx += slopes[0][0]
+                dxy += slopes[0][1]
+
                 n += 1
+
+
+
 
 
             DisplayScreen.update()
