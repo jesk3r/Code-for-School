@@ -130,13 +130,12 @@ def gameloop():
         "name": Player.id
     }
 
-    #print(data)
-    rp = requests.post('http://192.168.0.14:5000/handshake', json = data)
-    #print(rp.text)
+
+    rp = requests.post('http://192.168.0.15:5000/handshake', json = data)
+
 
     DisplayScreen.fill((0, 0, 0))
-    dxx = 100
-    dxy = 110
+
     running = True
     while running:
         bullet_list = pg.sprite.Group()
@@ -186,9 +185,9 @@ def gameloop():
             }
 
 
-            requests.post("http://192.168.0.14:5000/updateinfo", json= data)
+            requests.post("http://192.168.0.15:5000/updateinfo", json= data)
 
-            r = requests.get("http://192.168.0.14:5000/getplayerinfo")
+            r = requests.get("http://192.168.0.15:5000/getplayerinfo")
             pdata = r.json()
 
             n = 1
@@ -198,11 +197,6 @@ def gameloop():
             for i in range(1,7):
                 rotated_image, rect = rotate(surface=Player.image, angle=- pdata[i-1][str(n)]["angle"] + 90, pivot= pdata[i-1][str(n)]["pos"], offset=Player.offset)
                 DisplayScreen.blit(rotated_image,rect)
-
-                DisplayScreen.blit(Bullet.image, (dxx, dxy))
-                print(slopes)
-                dxx += slopes[0][0]
-                dxy += slopes[0][1]
 
                 n += 1
 
@@ -231,7 +225,7 @@ def gameloop():
 
 def exit_handler():
     print(Player.id)
-    requests.post("http://192.168.0.14:5000/removeplayer",json = {"name": str(Player.id)})
+    requests.post("http://192.168.0.15:5000/removeplayer",json = {"name": str(Player.id)})
     print("game left")
 
 
