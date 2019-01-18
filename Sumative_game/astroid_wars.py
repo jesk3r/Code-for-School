@@ -106,13 +106,6 @@ def getAngle(x1, y1, x2, y2):
 
 
 
-def slope(x1,x2,y1,y2):
-    rise = y1-y2
-    run = x1-x2
-    return run,rise
-
-
-
 #game loop function
 def gameloop():
     pg.mouse.set_visible(True)
@@ -144,8 +137,7 @@ def gameloop():
                 pg.mouse.set_visible(True)
                 running = False
             if event.type == MOUSEBUTTONUP:
-                x, y = slope(Player.pivot[0], event.pos[0], Player.pivot[1], event.pos[1])
-                slopes.append([x,y])
+                pass
 
 
 
@@ -214,8 +206,6 @@ def gameloop():
         except:
             pass
 
-
-asdfasdfasdf
 
         clock.tick(100)
         pg.display.update()
