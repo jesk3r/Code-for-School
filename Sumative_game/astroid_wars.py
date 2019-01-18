@@ -1,12 +1,10 @@
 import pygame as pg
 from pygame.locals import *
-from OpenGL.GL import *
-from OpenGL.GLU import *
 import math
 import sys
-import socket
+
 import requests
-from flask import jsonify
+
 import PlayermodelC as player
 import Bullet
 import atexit
@@ -217,7 +215,7 @@ def gameloop():
             pass
 
 
-
+asdfasdfasdf
 
         clock.tick(100)
         pg.display.update()
