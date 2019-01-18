@@ -215,8 +215,6 @@ def gameloop():
             pass
 
 
-asdfasdfasdf
-
         clock.tick(100)
         pg.display.update()
 
