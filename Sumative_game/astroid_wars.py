@@ -207,6 +207,9 @@ def gameloop():
             pass
 
 
+
+    print("plz change things ")
+
         clock.tick(100)
         pg.display.update()
 
