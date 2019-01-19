@@ -122,15 +122,14 @@ def gameloop():
     }
 
 
-    rp = requests.post('http://192.168.0.15:5000/handshake', json = data)
+
 
 
     DisplayScreen.fill((0, 0, 0))
 
     running = True
     while running:
-        bullet_list = pg.sprite.Group()
-        slopes = []
+
 
         for event in pg.event.get():
             if event.type == pg.QUIT:
@@ -161,54 +160,16 @@ def gameloop():
 
         Player.angle = getAngle(Player.pivot[0], Player.pivot[1], mos[0], mos[1])
 
-
-
-        try:
-
-            #update your player info
-            data = {
-                "name": Player.id,
-                "info": {
-                "pos": Player.pivot,
-                "angle":Player.angle
-                }
-            }
-
-
-            requests.post("http://192.168.0.15:5000/updateinfo", json= data)
-
-            r = requests.get("http://192.168.0.15:5000/getplayerinfo")
-            pdata = r.json()
-
-            n = 1
-
-
-
-            for i in range(1,7):
-                rotated_image, rect = rotate(surface=Player.image, angle=- pdata[i-1][str(n)]["angle"] + 90, pivot= pdata[i-1][str(n)]["pos"], offset=Player.offset)
-                DisplayScreen.blit(rotated_image,rect)
-
-                n += 1
+        rotated_image, rect = rotate(surface=Player.image, angle =- Player.angle + 90,pivot=Player.pivot, offset=Player.offset)
+        print(rect.x)
+        DisplayScreen.blit(rotated_image, rect)
 
 
 
 
 
-            DisplayScreen.update()
 
 
-
-
-            pass
-
-
-
-        except:
-            pass
-
-
-
-    print("plz change things ")
 
         clock.tick(100)
         pg.display.update()
