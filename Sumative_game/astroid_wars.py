@@ -20,6 +20,8 @@ pg.init()
 Player = player.Playermodel()
 Bullet = Bullet.bullet()
 
+
+
 class mouse_circle(pg.sprite.Sprite):
 
     def __init__(self,dp):
@@ -49,6 +51,10 @@ def menu_animation():
         pg.display.update()
         n += 1
 
+def getDirection(angle,velostiy = ):
+    x_value = velostiy * math.cos(math.radians(angle))
+    y_value = velostiy * math.sin(math.radians(angle))
+    #print(math.sin(math.radians(55)))
 
 
 def menu_screen():
@@ -135,8 +141,10 @@ def gameloop():
             if event.type == pg.QUIT:
                 pg.mouse.set_visible(True)
                 running = False
-            if event.type == MOUSEBUTTONUP:
-                pass
+            if event.type == MOUSEBUTTONDOWN:
+                x, y = getDirection(Player.angle)
+                v = pg.math.Vector2(x - .25, -1 * y)
+                bulleti, rectb = rotate(surface=player, angle=- player + 90, pivot=v, offset=pg.math.Vector2(0, -5))
 
 
 
@@ -163,13 +171,6 @@ def gameloop():
         rotated_image, rect = rotate(surface=Player.image, angle =- Player.angle + 90,pivot=Player.pivot, offset=Player.offset)
         print(rect.x)
         DisplayScreen.blit(rotated_image, rect)
-
-
-
-
-
-
-
 
         clock.tick(100)
         pg.display.update()
