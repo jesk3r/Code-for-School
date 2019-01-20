@@ -1,4 +1,6 @@
 from flask import Flask,jsonify,request
+import random
+import math
 
 app = Flask(__name__)
 
@@ -13,6 +15,16 @@ player_ingame = []
 player_ids = {}
 player_names = {}
 
+def getDirection(angle,velostiy = 3):
+    x_value = velostiy * math.cos(math.radians(angle))
+    y_value = velostiy * math.sin(math.radians(angle))
+
+    return x_value,y_value
+
+def gen_random_block():
+    angle = random.randint(0,360)
+    x,y = getDirection(angle)
+    return x,y
 
 @app.route('/getplayersingame', methods=['GET'])
 def setpos():
@@ -21,7 +33,6 @@ def setpos():
     respond = []
     for player in values:
         respond.append(player.__dict__)
-
 
     return jsonify(respond)
 
@@ -120,4 +131,4 @@ def remove_player():
 
 
 
-app.run(host='192.168.0.15',port=5000)
+app.run(host='127.0.0.1',port=5000)

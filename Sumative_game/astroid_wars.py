@@ -2,9 +2,9 @@ import pygame as pg
 from pygame.locals import *
 import math
 import sys
-
+import threading
 import requests
-
+import time
 import PlayermodelC as player
 import Bullet
 import atexit
@@ -111,6 +111,11 @@ def slope(x1,x2,y1,y2):
     run = x1-x2
     return run,rise
 
+def make_new_block():
+    threading.Timer(1000, make_new_block).start()
+    print("made new block")
+    pass
+
 
 
 #game loop function
@@ -129,12 +134,13 @@ def gameloop():
     }
 
 
-    rp = requests.post('http://192.168.0.15:5000/handshake', json = data)
+    #rp = requests.post('http://127.0.0.1:5000/handshake', json = data)
 
 
     DisplayScreen.fill((0, 0, 0))
 
     running = True
+    ccr = time.gmtime()[5]
     while running:
         bullet_list = pg.sprite.Group()
         slopes = []
@@ -147,8 +153,10 @@ def gameloop():
                 x, y = slope(Player.pivot[0], event.pos[0], Player.pivot[1], event.pos[1])
                 slopes.append([x,y])
 
-
-
+        # test for every second
+        if time.gmtime()[5] - ccr == 1:
+            print("its been 3 secs")
+            ccr = time.gmtime()[5]
 
 
         keys = pg.key.get_pressed()
@@ -171,6 +179,9 @@ def gameloop():
 
 
 
+        #finds how many seconds have pasted since the last block
+
+
         try:
 
             #update your player info
@@ -183,15 +194,12 @@ def gameloop():
             }
 
 
-            requests.post("http://192.168.0.15:5000/updateinfo", json= data)
+            requests.post("http://127.0.0.1:5000/updateinfo", json= data)
 
-            r = requests.get("http://192.168.0.15:5000/getplayerinfo")
+            r = requests.get("http://127.0.0.1:5000/getplayerinfo")
             pdata = r.json()
 
             n = 1
-
-
-
             for i in range(1,7):
                 rotated_image, rect = rotate(surface=Player.image, angle=- pdata[i-1][str(n)]["angle"] + 90, pivot= pdata[i-1][str(n)]["pos"], offset=Player.offset)
                 DisplayScreen.blit(rotated_image,rect)
@@ -220,8 +228,7 @@ def gameloop():
 
 
 def exit_handler():
-    print(Player.id)
-    requests.post("http://192.168.0.15:5000/removeplayer",json = {"name": str(Player.id)})
+    requests.post("http://127.0.0.1:5000/removeplayer",json = {"name": str(Player.id)})
     print("game left")
 
 
