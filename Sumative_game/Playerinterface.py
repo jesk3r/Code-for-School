@@ -14,6 +14,7 @@ class character():
 player_ingame = []
 player_ids = {}
 player_names = {}
+blocks = []
 
 def getDirection(angle,velostiy = 3):
     x_value = velostiy * math.cos(math.radians(angle))
@@ -25,6 +26,13 @@ def gen_random_block():
     angle = random.randint(0,360)
     x,y = getDirection(angle)
     return x,y
+
+@app.route('/createnewblock',methods=['GET'])
+def CNB():
+    vx ,vy = gen_random_block()
+    blocks.append([vx,vy])
+    print(blocks)
+    return "Blockmade",200
 
 @app.route('/getplayersingame', methods=['GET'])
 def setpos():

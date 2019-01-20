@@ -8,6 +8,7 @@ import time
 import PlayermodelC as player
 import Bullet
 import atexit
+import random
 
 Display_W = 800
 Display_L = 640
@@ -18,7 +19,7 @@ clock = pg.time.Clock()
 pg.init()
 
 Player = player.Playermodel()
-Bullet = Bullet.bullet()
+Bullete = Bullet.bullet()
 
 class mouse_circle(pg.sprite.Sprite):
 
@@ -112,7 +113,7 @@ def slope(x1,x2,y1,y2):
     return run,rise
 
 def make_new_block():
-    threading.Timer(1000, make_new_block).start()
+
     print("made new block")
     pass
 
@@ -141,23 +142,29 @@ def gameloop():
 
     running = True
     ccr = time.gmtime()[5]
+
+
+    bullet_list = pg.sprite.Group()
+    Bullete.rect = [375,295]
+    bullet_list.add(Bullete)
+    kill_box = pg.Rect(0,0,800,600)
     while running:
-        bullet_list = pg.sprite.Group()
-        slopes = []
+
 
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 pg.mouse.set_visible(True)
                 running = False
             if event.type == MOUSEBUTTONUP:
-                x, y = slope(Player.pivot[0], event.pos[0], Player.pivot[1], event.pos[1])
-                slopes.append([x,y])
+                pass
 
-        # test for every second
+        # test for every second and makes a block
         if time.gmtime()[5] - ccr == 1:
-            print("its been 3 secs")
             ccr = time.gmtime()[5]
-
+            b = Bullet.bullet()
+            b.rect = [375, 295]
+            bullet_list.add(b)
+            ccr = time.gmtime()[5]
 
         keys = pg.key.get_pressed()
         if keys[pg.K_d] or keys[pg.K_RIGHT]:
@@ -175,13 +182,21 @@ def gameloop():
         mos = pg.mouse.get_pos()
 
 
+
         Player.angle = getAngle(Player.pivot[0], Player.pivot[1], mos[0], mos[1])
 
 
+        #gets all the blocks and renders them
+        bullet_list.draw(DisplayScreen)
+        bullet_list.update(pg.math.Vector2(random.randint(0.0000,3.0000),random.randint(0.0000,3.0000)),60)
+        for blc in bullet_list:
+            #print(blc)
+            pass
 
-        #finds how many seconds have pasted since the last block
 
 
+
+        # The online componet of the game
         try:
 
             #update your player info
@@ -201,8 +216,14 @@ def gameloop():
 
             n = 1
             for i in range(1,7):
+
                 rotated_image, rect = rotate(surface=Player.image, angle=- pdata[i-1][str(n)]["angle"] + 90, pivot= pdata[i-1][str(n)]["pos"], offset=Player.offset)
+                if kill_box.contains(rect):
+                    print("alive")
+                else:
+                    requests.post("http://127.0.0.1:5000/removeplayer", json={"name": str(Player.id)})
                 DisplayScreen.blit(rotated_image,rect)
+
 
                 n += 1
 
