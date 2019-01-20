@@ -129,7 +129,7 @@ def gameloop():
     }
 
 
-    rp = requests.post('http://192.168.0.15:5000/handshake', json = data)
+    rp = requests.post('http://127.0.0.1:5000/handshake', json = data)
 
 
     DisplayScreen.fill((0, 0, 0))
@@ -183,9 +183,9 @@ def gameloop():
             }
 
 
-            requests.post("http://192.168.0.15:5000/updateinfo", json= data)
+            requests.post("http://127.0.0.1:5000/updateinfo", json= data)
 
-            r = requests.get("http://192.168.0.15:5000/getplayerinfo")
+            r = requests.get("http://127.0.0.1:5000/getplayerinfo")
             pdata = r.json()
 
             n = 1
@@ -221,7 +221,7 @@ def gameloop():
 
 def exit_handler():
     print(Player.id)
-    requests.post("http://192.168.0.15:5000/removeplayer",json = {"name": str(Player.id)})
+    requests.post("http://127.0.0.1:5000/removeplayer",json = {"name": str(Player.id)})
     print("game left")
 
 
