@@ -18,7 +18,7 @@ clock = pg.time.Clock()
 pg.init()
 
 Player = player.Playermodel()
-Bullet = Bullet.bullet()
+
 
 
 
@@ -51,11 +51,11 @@ def menu_animation():
         pg.display.update()
         n += 1
 
-def getDirection(angle,velostiy = ):
+def getDirection(angle,velostiy = 4):
     x_value = velostiy * math.cos(math.radians(angle))
     y_value = velostiy * math.sin(math.radians(angle))
     #print(math.sin(math.radians(55)))
-
+    return x_value,y_value
 
 def menu_screen():
     pg.mouse.set_visible(True)
@@ -127,13 +127,13 @@ def gameloop():
         "name": Player.id
     }
 
-
-
-
+    rp = requests.post('http://127.0.0.1:5000/handshake', json=data)
 
     DisplayScreen.fill((0, 0, 0))
 
     running = True
+    b_list = pg.sprite.Group()
+    death_box = pg.Rect(0,0,800,600)
     while running:
 
 
@@ -142,12 +142,16 @@ def gameloop():
                 pg.mouse.set_visible(True)
                 running = False
             if event.type == MOUSEBUTTONDOWN:
-                x, y = getDirection(Player.angle)
-                v = pg.math.Vector2(x - .25, -1 * y)
-                bulleti, rectb = rotate(surface=player, angle=- player + 90, pivot=v, offset=pg.math.Vector2(0, -5))
+                b = Bullet.bullet()
+                #b.rect = Player.rect
+                b.rect = pdata
+                x,y = getDirection(-Player.angle)
+                b.vx = x
+                b.vy = y
 
+                b_list.add(b)
 
-
+                pass
 
 
         keys = pg.key.get_pressed()
@@ -165,20 +169,66 @@ def gameloop():
 
         mos = pg.mouse.get_pos()
 
+        b_list.draw(DisplayScreen)
+        b_list.update()
+
+        for b in b_list:
+            if death_box.contains(b):
+                pass
+            else:
+                b_list.remove(b)
+
+
+
 
         Player.angle = getAngle(Player.pivot[0], Player.pivot[1], mos[0], mos[1])
 
-        rotated_image, rect = rotate(surface=Player.image, angle =- Player.angle + 90,pivot=Player.pivot, offset=Player.offset)
-        print(rect.x)
-        DisplayScreen.blit(rotated_image, rect)
 
-        clock.tick(100)
+                # update your player info
+        data = {
+            "name": Player.id,
+            "info": {
+            "pos": Player.pivot,
+            "angle": Player.angle
+                        }
+        }
+
+        requests.post("http://127.0.0.1:5000/updateinfo", json=data)
+
+        r = requests.get("http://127.0.0.1:5000/getplayerinfo")
+        pdata = r.json()
+
+
+        obl = requests.get("http://127.0.0.1:5000/getbullets")
+        bdata = obl.json()
+        n = 1
+        print(bdata)
+        rotated_image, rect = rotate(surface=Player.image, angle =- Player.angle + 90,pivot=Player.pivot, offset=Player.offset)
+        Player.rect = rect
+
+        try:
+            for i in range(1, 7):
+                rotated_image, rect = rotate(surface=Player.image, angle=- pdata[i - 1][str(n)]["angle"] + 90,pivot=pdata[i - 1][str(n)]["pos"], offset=Player.offset)
+                DisplayScreen.blit(rotated_image, rect)
+
+                n += 1
+
+            for i in range(0,10):
+                pass
+
+        except:
+            pass
+
+        DisplayScreen.blit(rotated_image, rect)
+        clock.tick(60)
         pg.display.update()
+
+
 
 
 def exit_handler():
     print(Player.id)
-    requests.post("http://192.168.0.15:5000/removeplayer",json = {"name": str(Player.id)})
+    requests.post("http://127.0.0.1:5000/removeplayer",json = {"name": str(Player.id)})
     print("game left")
 
 

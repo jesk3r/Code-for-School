@@ -18,6 +18,6 @@ class Playermodel(pg.sprite.Sprite):
         self.id = str(uuid4())
 
         self.image = pg.image.load("spaceshipV3.png")
-
+        self.rect = None
 
 

@@ -4,6 +4,7 @@ app = Flask(__name__)
 
 class character():
     n = 1
+    nb = 0
     def __init__(self):
         self.info = None
         self.id = None
@@ -12,7 +13,7 @@ class character():
 player_ingame = []
 player_ids = {}
 player_names = {}
-
+bullets = []
 
 @app.route('/getplayersingame', methods=['GET'])
 def setpos():
@@ -118,6 +119,34 @@ def remove_player():
 
     return "removed player", 200
 
+@app.route('/makebullet', methods=['POST'])
+def makebullet():
+    values = request.get_json()
+    print(values)
+    b_values = {
+        "x": values["x"],
+        "y": values["y"]
+    }
+
+    bullets.append(b_values)
+    return "bullet added", 200
 
 
-app.run(host='192.168.0.15',port=5000)
+@app.route('/getbullets', methods=['GET'])
+def getbullets():
+    frepond = []
+
+    for b in bullets:
+        block = {character.nb:{
+            'x': b['x'],
+            'y': b['y']
+            }
+        }
+        frepond.append(block)
+
+
+
+    return jsonify(frepond), 200
+
+
+app.run(host='127.0.0.1',port=5000)
