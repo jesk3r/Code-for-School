@@ -126,7 +126,7 @@ def gameloop():
         "name": Player.id
     }
 
-    rp = requests.post('http://127.0.0.1:5000/handshake', json=data)
+    rp = requests.post('http://192.168.0.14:5000/handshake', json=data)
 
     DisplayScreen.fill((0, 0, 0))
 
@@ -136,7 +136,7 @@ def gameloop():
     death_box = pg.Rect(0,0,800,600)
     while running:
 
-        obl = requests.get("http://127.0.0.1:5000/getbullets")
+        obl = requests.get("http://192.168.0.14:5000/getbullets")
         bdata = obl.json()
         print(bdata)
         print(bdata[0]['0']['y'])
@@ -196,9 +196,9 @@ def gameloop():
                             }
             }
 
-            requests.post("http://127.0.0.1:5000/updateinfo", json=data)
+            requests.post("http://192.168.0.14:5000/updateinfo", json=data)
 
-            r = requests.get("http://127.0.0.1:5000/getplayerinfo")
+            r = requests.get("http://192.168.0.14:5000/getplayerinfo")
             pdata = r.json()
 
 
@@ -242,7 +242,7 @@ def gameloop():
 
 def exit_handler():
     print(Player.id)
-    requests.post("http://127.0.0.1:5000/removeplayer",json = {"name": str(Player.id)})
+    requests.post("http://192.168.0.14:5000/removeplayer",json = {"name": str(Player.id)})
     print("game left")
 
 
