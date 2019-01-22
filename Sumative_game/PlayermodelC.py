@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import pygame as pg
 from uuid import uuid4
 
