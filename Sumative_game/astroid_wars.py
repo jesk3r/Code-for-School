@@ -215,11 +215,11 @@ def gameloop():
 
                 p_list.add(Player)
 
-                #DisplayScreen.blit(rotated_image,rect)
+                DisplayScreen.blit(rotated_image,rect)
 
 
                 n += 1
-                p_list.draw(DisplayScreen)
+
 
             for i in range(0,10):
 
