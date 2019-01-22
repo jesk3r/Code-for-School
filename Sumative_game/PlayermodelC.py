@@ -8,7 +8,7 @@ class Playermodel(pg.sprite.Sprite):
     angle = 0
     image = pg.image.load("spaceshipV3.png")
     name = "hello"
-
+    main_image = pg.image.load("spaceshipV3.png")
     def __init__(self):
 
         super().__init__()
@@ -17,7 +17,8 @@ class Playermodel(pg.sprite.Sprite):
         self.angle = 0
         self.id = str(uuid4())
 
-        self.image = pg.image.load("spaceshipV3.png")
+        self.image = None
+
         self.rect = None
 
 
