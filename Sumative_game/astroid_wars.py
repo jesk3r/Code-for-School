@@ -138,8 +138,7 @@ def gameloop():
 
         obl = requests.get("http://192.168.0.14:5000/getbullets")
         bdata = obl.json()
-        print(bdata)
-        print(bdata[0]['0']['y'])
+       
         try:
             for event in pg.event.get():
                 if event.type == pg.QUIT:
@@ -149,8 +148,7 @@ def gameloop():
                     b = Bullet.bullet()
                     #b.rect = Player.rect
                     x,y = getDirection(-Player.angle)
-                    b.vx = bdata[0]['0']['x'] - 19
-                    b.vy = bdata[0]['0']['y'] - 249
+
 
                     #b_list.add(b)
 
