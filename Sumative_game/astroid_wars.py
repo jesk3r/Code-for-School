@@ -171,7 +171,7 @@ def gameloop():
 
         #first render the players
         for enemy in client.EnemiesInGame:
-            enemy.Rmodel,enemy.rect = gamecontroller.rotate(surface= Player.player.enemy_modle, angle = enemy.angle , pivot = enemy.Pos)
+            enemy.Rmodel,enemy.rect = gamecontroller.rotate(surface= player.enemy_modle, angle = enemy.angle , pivot = enemy.Pos)
             DisplayScreen.blit(enemy.Rmodel,enemy.rect)
 
         client.EnemiesInGame.clear()

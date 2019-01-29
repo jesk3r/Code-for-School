@@ -3,9 +3,11 @@ import pygame
 from uuid import uuid4
 
 class player():
-    player_model = pygame.image.load("spaceshipV3.png")
-    enemy_modle = pygame.image.load("spaceshipEV3.png")
+
     def __init__(self):
+        self.player_model = pygame.image.load("spaceshipV3.png")
+        self.enemy_modle = pygame.image.load("spaceshipEV3.png")
+
         self.Pos = [400,360]
         self.angle = 0
         self.health = None
