@@ -2,10 +2,12 @@
 import pygame
 import math
 import uuid
+import os
 
 class projectile():
     #class variables
-    projectileImage = pygame.image.load("/Users/dheeraj/Documents/git_projects/School_work/Coding_class/Sumative_game/projectileh.png")
+
+    projectileImage = pygame.image.load( os.path.dirname(os.path.abspath(__file__)) + "/projectileh.png")
     speedvector = 10
 
     #first method that is called
