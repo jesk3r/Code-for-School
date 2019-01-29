@@ -1,12 +1,13 @@
 #import depndencis
 import pygame
 from uuid import uuid4
+import os
 
 class player():
 
     def __init__(self):
-        self.player_model = pygame.image.load(os.path.dirname(os.path.abspath(__file__))+"spaceshipV3.png")
-        self.enemy_modle = pygame.image.load(os.path.dirname(os.path.abspath(__file__))+"spaceshipEV3.png")
+        self.player_model = pygame.image.load(os.path.dirname(os.path.abspath(__file__))+"/spaceshipV3.png")
+        self.enemy_modle = pygame.image.load(os.path.dirname(os.path.abspath(__file__))+"/spaceshipEV3.png")
 
         self.Pos = [400,360]
         self.angle = 0
