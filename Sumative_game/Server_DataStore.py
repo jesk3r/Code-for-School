@@ -41,7 +41,6 @@ class Sever_DS():
             if projectiles.id == id:
                 self.projectiles.remove(projectiles)
 
-
     def updateprojectile(self,id ):
 
         for projectle in self.projectiles:

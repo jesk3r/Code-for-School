@@ -66,6 +66,3 @@ class GC():
 
     def updateprojectile(self):
         pass
-
-
-

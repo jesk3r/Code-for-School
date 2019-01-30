@@ -49,7 +49,7 @@ def gameloop():
 
                 projectile.Calculate_vector(projectile.angle)
 
-                projectile.Rimage,projectile.rect = gamecontroller.rotate(surface = projectile.projectileImage ,angle = player.angle ,pivot = projectile.pos  ,)
+                projectile.Rimage,projectile.rect = gamecontroller.rotate(surface = projectile.projectileImage.convert() ,angle = player.angle ,pivot = projectile.pos  ,)
 
                 gamecontroller.ProjectileInPlay.append(projectile)
 
@@ -112,7 +112,7 @@ def gameloop():
         #update our player info
         player.update_pos([player.Pos[0] + gamecontroller.Dx, player.Pos[1] + gamecontroller.Dy])
 
-        player.Rmodel,player.rect = gamecontroller.rotate(surface = player.player_model,angle = player.angle ,pivot = player.Pos)
+        player.Rmodel,player.rect = gamecontroller.rotate(surface = player.player_model.convert(),angle = player.angle ,pivot = player.Pos)
 
         #transmit our data to the server
 
@@ -171,7 +171,7 @@ def gameloop():
 
         #first render the players
         for enemy in client.EnemiesInGame:
-            enemy.Rmodel,enemy.rect = gamecontroller.rotate(surface= player.enemy_modle, angle = enemy.angle , pivot = enemy.Pos)
+            enemy.Rmodel,enemy.rect = gamecontroller.rotate(surface= player.enemy_modle.convert(), angle = enemy.angle , pivot = enemy.Pos)
             DisplayScreen.blit(enemy.Rmodel,enemy.rect)
 
         client.EnemiesInGame.clear()
